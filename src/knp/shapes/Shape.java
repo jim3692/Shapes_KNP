@@ -50,6 +50,9 @@ public class Shape extends BufferedImage {
 	}
 	
 	public void makeLine(Point p1, Point p2, ColorScheme scheme, boolean ignoreOversized) throws Exception {
+		int width = (int)(p1.X - p2.X + 1);
+		int height = (int)(p1.Y - p2.Y + 1);
+		
 		if (!ignoreOversized) {
 			if (p1.X + 1 > this.getWidth()) throw new ShapeOversized(ShapeOversized.ErrorMessage.Width);
 			if (p2.X + 1 > this.getWidth()) throw new ShapeOversized(ShapeOversized.ErrorMessage.Width);

@@ -20,4 +20,9 @@ public class Point {
 		double YSquared = Math.pow(p.Y - this.Y, 2);
 		return Math.sqrt(XSquared + YSquared);
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("({0},{1})", (int)X, (int)Y);
+	}
 }
