@@ -50,8 +50,8 @@ public class Shape extends BufferedImage {
 	}
 	
 	public void makeLine(Point p1, Point p2, ColorScheme scheme, boolean ignoreOversized) throws Exception {
-		int width = (int)(p1.X - p2.X + 1);
-		int height = (int)(p1.Y - p2.Y + 1);
+		double width = Math.abs(p1.X - p2.X) + 1d;
+		double height = Math.abs(p1.Y - p2.Y) + 1d;
 		
 		if (!ignoreOversized) {
 			if (p1.X + 1 > this.getWidth()) throw new ShapeOversized(ShapeOversized.ErrorMessage.Width);
@@ -60,7 +60,40 @@ public class Shape extends BufferedImage {
 			if (p2.Y + 1 > this.getHeight()) throw new ShapeOversized(ShapeOversized.ErrorMessage.Height);
 		}
 		
+		int sign_X, beginX, endX;
+		int sign_Y, beginY, endY;
+		double stepX;
+		double stepY;
 		
+		if (p1.X < p2.X) {
+			sign_X = 1;
+			beginX = (int)p1.X;
+			endX = (int)p2.X;
+		} else {
+			sign_X = -1;
+			beginX = (int)p2.X;
+			endX = (int)p1.X;
+		}
+		
+		if (p1.Y < p2.Y) {
+			sign_Y = 1;
+			beginY = (int)p1.Y;
+			endY = (int)p2.Y;
+			
+		} else {
+			sign_Y = -1;
+			beginY = (int)p2.Y;
+			endY = (int)p1.Y;
+		}
+		
+		stepX = width / height;
+		stepY = height / width;
+		
+		for (float x = beginX; x * sign_X < endX * sign_X; x += sign_X * stepX) {
+			for (float y = beginY; y * sign_Y < endY * sign_Y; y += sign_Y * stepY) {
+				this.setRGB((int)x, (int)y, scheme.A.getRGB());
+			}
+		}
 	}
 	
 	public void makeTriangle(Point p1, Point p2, Point p3, ColorScheme scheme, boolean ignoreOversized) throws Exception {
